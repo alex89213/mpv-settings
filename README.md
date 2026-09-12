@@ -28,20 +28,38 @@ the mpv folder. Older builds shipped an `installer` folder with
 | `B` | Cycle deband strength (mpv's own `b` toggles debanding on and off) |
 | `h` / `H` | Next / previous audio track |
 | `Ctrl+f` | Toggle between the high-quality and fast video profiles |
-| `Ctrl+i` | Toggle interpolation |
+| `Ctrl+i` | Toggle smooth motion (display-sync plus interpolation) |
 | `Ctrl+t` | Open the console to jump to a timestamp |
 | `Ctrl+1` | Cycle tone-mapping between spline, bt.2446a and st2094-40 |
 
 `Ctrl+f` is the one to reach for on integrated graphics or on battery. It
-drops to mpv's builtin `fast` profile and back again, and it restores the
-previous settings properly rather than leaving some of them stuck. See the
-comments in `mpv.conf` and `scripts/quality-toggle.lua` for why that takes a
-script.
+drops to mpv's builtin `fast` profile and back again, restoring the previous
+settings properly rather than leaving some of them stuck.
+
+`Ctrl+i` reduces judder when the video frame rate does not divide evenly into
+your refresh rate, for example 24 fps on a 180 Hz display. It costs CPU and GPU
+time, so it is off by default. Interpolation cannot work alone, which is why
+this switches `video-sync` at the same time.
+
+Both are profiles in `mpv.conf` driven by `scripts/profile-toggle.lua`. The
+comments in those two files explain why toggling a profile needs a script.
 
 ## What the config does
 
 Rendering uses `vo=gpu-next` with the `high-quality` profile and `hwdec=auto`.
 Debanding is configured but off; press `b` to turn it on.
+
+HDR peak detection is on, measured per frame rather than read from the file's
+static metadata. Mastering-display tags describe a whole film instead of the
+current scene and are usually far brighter than anything actually on screen,
+which makes darker scenes look flatter than they should. Detection can make
+brightness drift mid-scene, so it is paired with a percentile cutoff, a slow
+decay rate and raised scene thresholds to hold it steady. If you still see
+drifting, raise `hdr-peak-decay-rate` first. `Ctrl+f` switches detection off
+entirely, since it needs compute shaders that are slow on some drivers.
+
+Surround audio is normalized when folded down to stereo, so dialogue in a 5.1
+or 7.1 track does not end up buried under the effects.
 
 Playback keeps a 300 MB demuxer cache in each direction, so seeking backward
 does not re-read the file. Opening one file loads the rest of its folder as a
