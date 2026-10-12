@@ -49,28 +49,32 @@ comments in those two files explain why toggling a profile needs a script.
 Rendering uses `vo=gpu-next` with the `high-quality` profile and `hwdec=auto`.
 Debanding is configured but off; press `b` to turn it on.
 
-HDR peak detection is on, measured per frame rather than read from the file's
+HDR peak detection measures the peak per frame rather than reading the file's
 static metadata. Mastering-display tags describe a whole film instead of the
 current scene and are usually far brighter than anything actually on screen,
-which makes darker scenes look flatter than they should. Detection can make
-brightness drift mid-scene, so it is paired with a percentile cutoff, a slow
-decay rate and raised scene thresholds to hold it steady. If you still see
+which makes darker scenes look flatter than they should. mpv already does this
+by default wherever compute shaders work, so the config only tunes it: a slow
+decay rate and raised scene thresholds hold the measured peak steady, since
+detection otherwise makes brightness drift mid-scene. If you still see
 drifting, raise `hdr-peak-decay-rate` first. `Ctrl+f` switches detection off
-entirely, since it needs compute shaders that are slow on some drivers.
+entirely, since the compute shaders it needs are slow on some drivers.
 
 Surround audio is normalized when folded down to stereo, so dialogue in a 5.1
-or 7.1 track does not end up buried under the effects.
+or 7.1 track does not end up buried under the effects. ReplayGain is set to
+`track`, which evens out loudness between files that carry gain tags.
 
-Playback keeps a 300 MB demuxer cache in each direction, so seeking backward
-does not re-read the file. Opening one file loads the rest of its folder as a
-playlist. Resume-on-open is off, so mpv never writes watch-later files.
+Playback keeps a 1 GB demuxer back buffer and 300 MB of forward readahead, so
+seeking backward does not re-read the file. Opening one file loads the rest of
+its folder as a playlist. Resume-on-open is off, so mpv never writes
+watch-later files.
 
 Screenshots go into a `Screenshots` folder next to the video, as PNG with the
 colorspace tagged. For streams and anything else not on disk, they fall back
-to your Desktop.
+to `Screenshots` on your Desktop.
 
-mpv writes a log to `mpv-log.txt` in the mpv folder on every run. Remove the
-`log-file` line from `mpv.conf` if you would rather it did not.
+The `log-file` line in `mpv.conf` is commented out. Uncomment it to write
+`portable_config/mpv-log.txt` on every run. mpv forces that file to at least
+`-v -v`, so it grows quickly and is overwritten each time mpv starts.
 
 Subtitle font settings apply to plain-text subtitles only. ASS and SSA
 subtitles keep their own styling, which is usually what you want.
