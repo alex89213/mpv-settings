@@ -85,8 +85,10 @@ subtitles keep their own styling, which is usually what you want.
 
 Both are licensed under the [SIL Open Font
 License 1.1](https://scripts.sil.org/OFL), not under this repository's
-license. Their license files sit next to the font files and must stay with
-them if you redistribute.
+license. Their license files are in `portable_config/font-licenses` and must
+stay with the fonts if you redistribute. They sit outside the fonts folder
+because libass tries to load every entry in that folder as a font and warns
+about anything that is not one, including subfolders.
 
 Use static font files rather than variable ones. libass cannot select a named
 instance from a variable font, so asking for a Bold or a Display cut silently
