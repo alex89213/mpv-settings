@@ -1,10 +1,9 @@
--- Turn the profiles defined at the end of mpv.conf on and off from a key.
+-- Turns the profiles defined at the end of mpv.conf on and off from a key.
 --
 -- mpv has no command that toggles a profile: apply-profile only applies or
 -- restores, and neither cycle nor cycle-values works on user-data properties,
--- so whether a profile is currently on has to be tracked here.
---
--- Restoring relies on profile-restore=copy being set on each profile.
+-- so whether a profile is currently on has to be tracked here. Restoring
+-- relies on profile-restore=copy being set on each profile.
 
 local function make_toggle(profile, on_label, off_label)
     local on = false
