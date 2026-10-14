@@ -30,7 +30,7 @@ the mpv folder. Older builds shipped an `installer` folder with
 | `Ctrl+f` | Toggle between the high-quality and fast video profiles |
 | `Ctrl+i` | Toggle smooth motion (display-sync plus interpolation) |
 | `Ctrl+t` | Open the console to jump to a timestamp |
-| `Ctrl+1` | Cycle tone-mapping between spline, bt.2446a and st2094-40 |
+| `Ctrl+o` | Cycle tone-mapping between spline, bt.2446a and st2094-40 |
 
 `Ctrl+f` is the one to reach for on integrated graphics or on battery. It
 drops to mpv's builtin `fast` profile and back again, restoring the previous
@@ -83,11 +83,13 @@ subtitles keep their own styling, which is usually what you want.
 
 `portable_config/fonts` is loaded by mpv automatically. It contains:
 
-- [Inter](https://github.com/rsms/inter) for subtitles and the OSD
+- [Geist](https://github.com/vercel/geist-font) for subtitles and the OSD
+- [Literata](https://github.com/googlefonts/literata), a serif alternative for
+  subtitles. Swap the commented-out `sub-font` line in `mpv.conf` to use it
 - [JetBrains Mono](https://github.com/JetBrains/JetBrainsMono) for the stats
   overlay and console
 
-Both are licensed under the [SIL Open Font
+All three are licensed under the [SIL Open Font
 License 1.1](https://scripts.sil.org/OFL), not under this repository's
 license. Their license files are in `portable_config/font-licenses` and must
 stay with the fonts if you redistribute. They sit outside the fonts folder
